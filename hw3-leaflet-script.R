@@ -19,6 +19,11 @@ usa.load <- readOGR("./uscounties/cb_2017_us_county_500k.shp", layer = "cb_2017_
 # This one shows up too woohoo!
 plot(usa.load)
 
+# Merging usa shape file with data on educational attainment by county
+
+
+
+
 # Blank map with single basemap option
 leaflet() %>%
   addProviderTiles("OpenStreetMap.HOT", options = providerTileOptions(noWrap = TRUE))
