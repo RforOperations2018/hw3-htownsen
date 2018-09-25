@@ -14,6 +14,7 @@ in.load <- readOGR("./indianacounties/tl_2013_18_cousub.shp", layer = "tl_2013_1
 plot(in.load)
 
 # Loading in the USA counties shape file
+# 2017 Cartographic Boundary Files
 usa.load <- readOGR("./uscounties/cb_2017_us_county_500k.shp", layer = "cb_2017_us_county_500k", GDAL1_integer64_policy = TRUE)
 # This one shows up too woohoo!
 plot(usa.load)
