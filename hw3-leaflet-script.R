@@ -27,7 +27,7 @@ usa.load <- readOGR("./uscounties/cb_2017_us_county_500k.shp", layer = "cb_2017_
 # This one shows up too woohoo!
 plot(usa.load)
 
-# Datasets found here: https://data.ers.usda.gov/reports.aspx?ID=17829
+# Datasets found here: https://data.ers.usda.gov/reports.aspx?ID=17826
 # Reading in the data for Indiana
 indf <- read_excel("PercentPovertyIN.xlsx")
 
