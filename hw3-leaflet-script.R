@@ -27,24 +27,22 @@ usa.load <- readOGR("./uscounties/cb_2017_us_county_500k.shp", layer = "cb_2017_
 # This one shows up too woohoo!
 plot(usa.load)
 
-# Merging usa shape file with data on educational attainment by county
+# Reading in the data for Indiana
 indf <- read_excel("PercentNotCompleteHSIN.xlsx")
-View(indf)
 
-# Merging usa shape file with data on educational attainment by county
+# Reading in the data for Ohio
 ohdf <- read_excel("PercentNotCompleteHSOH.xlsx")
-View(ohdf)
 
 # Row binding the two datasets (OH and IN)
 inohdf <- rbind(indf, ohdf)
-View(inohdf)
+# Rename the last column
+colnames(inohdf)[4] <- "nothsgrad"
 
 # Going to Merge on GEOID and FIPS
 # Just having the matching GEOID's, only want OH and IN
 inoh <- usa.load[usa.load$GEOID %in% inohdf$FIPS,]
 # Merging the shape data with the education data
 inoh@data <- merge(inoh@data, inohdf, sort = FALSE, by.x = "GEOID", by.y = "FIPS")
-
 
 # Blank map with single basemap option
 leaflet() %>%
@@ -63,3 +61,15 @@ leaflet() %>%
     baseGroups = c("OSM (default)", "HOT", "Roads"),
     options = layersControlOptions(collapsed = FALSE)
   )
+
+
+# Shape with fills
+pal <- colorNumeric(
+  palette = "Reds",
+  domain = inoh$nothsgrad)
+
+leaflet(data = inoh) %>%
+  addProviderTiles("Stamen.Toner") %>%
+  addPolygons(color = ~pal(nothsgrad), popup = ~paste0("<b>", `County-State`, ":</b> ", nothsgrad, "percent")) 
+#%>%addLegend(position = "bottomright", pal = pal, values = cds$`Life Expectancy at Birth (years)`, title = "Avg Life Expectancy<br>at Birth (years)")
+
