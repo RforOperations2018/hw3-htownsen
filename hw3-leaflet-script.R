@@ -61,7 +61,8 @@ leaflet() %>%
     options = layersControlOptions(collapsed = FALSE)
   )
 
-# MAP WITH POINTS LAYER
+
+# MAP WITH POINTS LAYER: Crashes in Monroe County, IN in 2015
 crashes <- read.csv("MonroeCountyINCrashes.csv")
 crashes15 <- crashes[crashes$Year=="2015",]
 
@@ -73,8 +74,7 @@ leaflet() %>%
   addCircleMarkers(data = crashes15, lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
   addLegend(position = "topright" , pal = palcrash, values = crashes15$Weekend., title = "Time of Week")
 
-
-# MAP WITH FILLED POLYGONS
+# MAP WITH FILLED POLYGONS: Poverty by County in OH and IN
 pal <- colorNumeric(
   palette = "Reds",
   domain = inoh$poverty16)
