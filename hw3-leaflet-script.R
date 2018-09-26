@@ -43,9 +43,6 @@ inoh <- usa.load[usa.load$GEOID %in% inohdf$FIPS,]
 # Merging the shape data with the education data
 inoh@data <- merge(inoh@data, inohdf, sort = FALSE, by.x = "GEOID", by.y = "FIPS")
 
-# Blank map with single basemap option
-leaflet() %>%
-  addProviderTiles("OpenStreetMap.HOT", options = providerTileOptions(noWrap = TRUE))
 
 # Blank map with three basemap options
 # It's not letting me mix Stamen or Thuderstorm maps in the mix
@@ -66,11 +63,11 @@ leaflet() %>%
 crashes <- read.csv("MonroeCountyINCrashes.csv")
 crashes15 <- crashes[crashes$Year=="2015",]
 
-# Custom Palette
+# Color Pallette: markers by time of week
 palcrash <- colorFactor(c("#adff2f", "#8b3a3a"), c("Weekend", "Weekday"))
 
 leaflet() %>%
-  addProviderTiles("OpenMapSurfer.Roads") %>%
+  addProviderTiles("OpenMapSurfer.Roads", options = providerTileOptions(noWrap = TRUE)) %>%
   addCircleMarkers(data = crashes15, lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
   addLegend(position = "topright" , pal = palcrash, values = crashes15$Weekend., title = "Time of Week")
 
@@ -80,8 +77,22 @@ pal <- colorNumeric(
   domain = inoh$poverty16)
 
 leaflet(data = inoh) %>%
-  addProviderTiles("Stamen.Toner") %>%
+  addProviderTiles("Stamen.Toner", options = providerTileOptions(noWrap = TRUE)) %>%
   addPolygons(color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "%")) %>%
   addLegend(position = "bottomright", pal = pal, values = inoh$poverty16, 
             title = "Percent of Population<br>in Poverty (2016)")
+
+# Layering the points map and polygon map
+leaflet() %>%
+  addProviderTiles("Stamen.Toner", group="Poverty", options = providerTileOptions(noWrap = TRUE)) %>%
+  addProviderTiles("OpenMapSurfer.Roads", group="Crashes", options = providerTileOptions(noWrap = TRUE)) %>%
+  addPolygons(data = inoh, group="Poverty", color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "%")) %>%
+  addCircleMarkers(data = crashes15, group="Crashes", lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
+  addLegend(position = "topright" , group="Crashes", pal = palcrash, values = crashes15$Weekend., title = "Time of Week") %>%
+  addLegend(position = "bottomright", group="Poverty", pal = pal, values = inoh$poverty16, 
+            title = "Percent of Population<br>in Poverty (2016)") %>%
+  addLayersControl(
+    baseGroups = c("Poverty", "Crashes"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
 
