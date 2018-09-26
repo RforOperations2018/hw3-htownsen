@@ -61,8 +61,20 @@ leaflet() %>%
     options = layersControlOptions(collapsed = FALSE)
   )
 
+# MAP WITH POINTS LAYER
+crashes <- read.csv("MonroeCountyINCrashes.csv")
+crashes15 <- crashes[crashes$Year=="2015",]
 
-# Shape with fills
+# Custom Palette
+palcrash <- colorFactor(c("#adff2f", "#8b3a3a"), c("Weekend", "Weekday"))
+
+leaflet() %>%
+  addProviderTiles("OpenStreetMap.HOT") %>%
+  addCircleMarkers(data = crashes15, lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
+  addLegend(position = "topright" , pal = palcrash, values = crashes15$Weekend., title = "Time of Week")
+
+
+# MAP WITH FILLED POLYGONS
 pal <- colorNumeric(
   palette = "Reds",
   domain = inoh$poverty16)
