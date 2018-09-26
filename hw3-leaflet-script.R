@@ -27,16 +27,15 @@ usa.load <- readOGR("./uscounties/cb_2017_us_county_500k.shp", layer = "cb_2017_
 # This one shows up too woohoo!
 plot(usa.load)
 
+# Datasets found here: https://data.ers.usda.gov/reports.aspx?ID=17829
 # Reading in the data for Indiana
-indf <- read_excel("PercentNotCompleteHSIN.xlsx")
+indf <- read_excel("PercentPovertyIN.xlsx")
 
 # Reading in the data for Ohio
-ohdf <- read_excel("PercentNotCompleteHSOH.xlsx")
+ohdf <- read_excel("PercentPovertyOH.xlsx")
 
 # Row binding the two datasets (OH and IN)
 inohdf <- rbind(indf, ohdf)
-# Rename the last column
-colnames(inohdf)[4] <- "nothsgrad"
 
 # Going to Merge on GEOID and FIPS
 # Just having the matching GEOID's, only want OH and IN
@@ -66,10 +65,10 @@ leaflet() %>%
 # Shape with fills
 pal <- colorNumeric(
   palette = "Reds",
-  domain = inoh$nothsgrad)
+  domain = inoh$poverty16)
 
 leaflet(data = inoh) %>%
   addProviderTiles("Stamen.Toner") %>%
-  addPolygons(color = ~pal(nothsgrad), popup = ~paste0("<b>", `County-State`, ":</b> ", nothsgrad, "percent")) %>%
+  addPolygons(color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", percent16, "percent")) %>%
   addLegend(position = "bottomright", pal = pal, values = inoh$nothsgrad, title = "Did Not Graduate HS")
 
