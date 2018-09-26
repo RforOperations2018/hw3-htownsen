@@ -70,6 +70,6 @@ pal <- colorNumeric(
 
 leaflet(data = inoh) %>%
   addProviderTiles("Stamen.Toner") %>%
-  addPolygons(color = ~pal(nothsgrad), popup = ~paste0("<b>", `County-State`, ":</b> ", nothsgrad, "percent")) 
-#%>%addLegend(position = "bottomright", pal = pal, values = cds$`Life Expectancy at Birth (years)`, title = "Avg Life Expectancy<br>at Birth (years)")
+  addPolygons(color = ~pal(nothsgrad), popup = ~paste0("<b>", `County-State`, ":</b> ", nothsgrad, "percent")) %>%
+  addLegend(position = "bottomright", pal = pal, values = inoh$nothsgrad, title = "Did Not Graduate HS")
 
