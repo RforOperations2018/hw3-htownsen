@@ -44,21 +44,6 @@ inoh <- usa.load[usa.load$GEOID %in% inohdf$FIPS,]
 inoh@data <- merge(inoh@data, inohdf, sort = FALSE, by.x = "GEOID", by.y = "FIPS")
 
 
-# Blank map with three basemap options
-# It's not letting me mix Stamen or Thuderstorm maps in the mix
-leaflet() %>%
-  addTiles(group = "OSM (default)", options = providerTileOptions(noWrap = TRUE)) %>%
-  addProviderTiles("OpenStreetMap.HOT", group = "HOT", options = providerTileOptions(noWrap = TRUE)) %>%
-  addProviderTiles("OpenMapSurfer.Roads", group = "Roads", options = providerTileOptions(noWrap = TRUE)) %>%
-  # Layers control
-  # chooses which basemap is visible
-  # creates radiobuttons
-  addLayersControl(
-    baseGroups = c("OSM (default)", "HOT", "Roads"),
-    options = layersControlOptions(collapsed = FALSE)
-  )
-
-
 # MAP WITH POINTS LAYER: Crashes in Monroe County, IN in 2015
 crashes <- read.csv("MonroeCountyINCrashes.csv")
 crashes15 <- crashes[crashes$Year=="2015",]
@@ -88,11 +73,11 @@ leaflet() %>%
   addProviderTiles("OpenMapSurfer.Roads", group="Crashes", options = providerTileOptions(noWrap = TRUE)) %>%
   addPolygons(data = inoh, group="Poverty", color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "%")) %>%
   addCircleMarkers(data = crashes15, group="Crashes", lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
-  addLegend(position = "topright" , group="Crashes", pal = palcrash, values = crashes15$Weekend., title = "Time of Week") %>%
+  addLegend(position = "topright", group="Crashes", pal = palcrash, values = crashes15$Weekend., title = "Time of Week") %>%
   addLegend(position = "bottomright", group="Poverty", pal = pal, values = inoh$poverty16, 
             title = "Percent of Population<br>in Poverty (2016)") %>%
   addLayersControl(
-    baseGroups = c("Poverty", "Crashes"),
-    options = layersControlOptions(collapsed = FALSE)
-  )
+    overlayGroups = c("Poverty", "Crashes"),
+    options = layersControlOptions(collapsed = FALSE))
+
 
