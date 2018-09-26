@@ -1,4 +1,12 @@
 
+# CREATING A MAP
+#Map will include: 
+#•	Basemap
+#•	One layer of points
+#•	One layer of lines
+#•	One layer of polygons
+#•	A legend which helps users identify what they are looking at
+
 # Loading the libraries
 require(rgdal)
 require(leaflet)
@@ -23,8 +31,19 @@ plot(usa.load)
 indf <- read_excel("PercentNotCompleteHSIN.xlsx")
 View(indf)
 
-usa.load@data <- merge(usa.load@data, indf, sort = FALSE, by.x = "COUNTY", by.y = "Number")
+# Merging usa shape file with data on educational attainment by county
+ohdf <- read_excel("PercentNotCompleteHSOH.xlsx")
+View(ohdf)
 
+# Row binding the two datasets (OH and IN)
+inohdf <- rbind(indf, ohdf)
+View(inohdf)
+
+# Going to Merge on GEOID and FIPS
+# Just having the matching GEOID's, only want OH and IN
+inoh <- usa.load[usa.load$GEOID %in% inohdf$FIPS,]
+# Merging the shape data with the education data
+inoh@data <- merge(inoh@data, inohdf, sort = FALSE, by.x = "GEOID", by.y = "FIPS")
 
 
 # Blank map with single basemap option
