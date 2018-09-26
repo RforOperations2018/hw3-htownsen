@@ -1,5 +1,5 @@
-
-# CREATING A MAP
+# HALEY TOWNSEND
+# CREATING A MAP - HOMEWORK 3
 #Map will include: 
 #•	Basemap
 #•	One layer of points
@@ -46,10 +46,14 @@ inoh@data <- merge(inoh@data, inohdf, sort = FALSE, by.x = "GEOID", by.y = "FIPS
 
 # MAP WITH POINTS LAYER: Crashes in Monroe County, IN in 2015
 crashes <- read.csv("MonroeCountyINCrashes.csv")
-crashes15 <- crashes[crashes$Year=="2015",]
+crashesclean <- na.omit(crashes)
+
+# Just going to use crashes from 2015 
+crashes15 <- crashesclean[crashesclean$Year=="2015" & crashesclean$Latitude!=0.00000,]
+
 
 # Color Pallette: markers by time of week
-palcrash <- colorFactor(c("#adff2f", "#8b3a3a"), c("Weekend", "Weekday"))
+palcrash <- colorFactor(c("#ee82ee", "#adff2f"), c("Weekend", "Weekday"))
 
 leaflet() %>%
   addProviderTiles("OpenMapSurfer.Roads", options = providerTileOptions(noWrap = TRUE)) %>%
