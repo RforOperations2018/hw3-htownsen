@@ -69,7 +69,7 @@ crashes15 <- crashes[crashes$Year=="2015",]
 palcrash <- colorFactor(c("#adff2f", "#8b3a3a"), c("Weekend", "Weekday"))
 
 leaflet() %>%
-  addProviderTiles("OpenStreetMap.HOT") %>%
+  addProviderTiles("OpenMapSurfer.Roads") %>%
   addCircleMarkers(data = crashes15, lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
   addLegend(position = "topright" , pal = palcrash, values = crashes15$Weekend., title = "Time of Week")
 
