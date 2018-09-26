@@ -53,7 +53,7 @@ crashes15 <- crashesclean[crashesclean$Year=="2015" & crashesclean$Latitude!=0.0
 
 
 # Color Pallette: markers by time of week
-palcrash <- colorFactor(c("#ee82ee", "#adff2f"), c("Weekend", "Weekday"))
+palcrash <- colorFactor(c("#ee82ee", "#3b0054"), c("Weekend", "Weekday"))
 
 leaflet() %>%
   addProviderTiles("OpenMapSurfer.Roads", options = providerTileOptions(noWrap = TRUE)) %>%
