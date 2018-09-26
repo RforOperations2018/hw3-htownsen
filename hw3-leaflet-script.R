@@ -69,7 +69,7 @@ pal <- colorNumeric(
 
 leaflet(data = inoh) %>%
   addProviderTiles("Stamen.Toner") %>%
-  addPolygons(color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "percent")) %>%
+  addPolygons(color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "%")) %>%
   addLegend(position = "bottomright", pal = pal, values = inoh$poverty16, 
             title = "Percent of Population<br>in Poverty (2016)")
 
