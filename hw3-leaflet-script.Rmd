@@ -75,18 +75,18 @@ crashes15 <- crashesclean[crashesclean$Year=="2015" & crashesclean$Latitude!=0.0
 # Color Pallette: markers by time of week
 palcrash <- colorFactor(c("#ee82ee", "#3b0054"), c("Weekend", "Weekday"))
 
-leaflet() %>%
+leaflet(width = "100%") %>%
   addProviderTiles("OpenMapSurfer.Roads", options = providerTileOptions(noWrap = TRUE)) %>%
   addCircleMarkers(data = crashes15, lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
   addLegend(position = "topright" , pal = palcrash, values = crashes15$Weekend., title = "Time of Week")
 ```
 
 ```{r}
-# MAP with LINES: bike paths in Indiana
+# MAP with LINES: waterways in Indiana
 waterways <- readOGR("./indiana_water/indiana_water.shp", layer = "indiana_water",
                               GDAL1_integer64_policy = TRUE)
 
-leaflet(data = waterways) %>%
+leaflet(data = waterways, width = "100%") %>%
   addProviderTiles("Stamen.Toner", options = providerTileOptions(noWrap = TRUE)) %>%
   addPolylines(color = "#63CBD3")
 ```
@@ -97,7 +97,7 @@ pal <- colorNumeric(
   palette = "Reds",
   domain = inoh$poverty16)
 
-leaflet(data = inoh) %>%
+leaflet(data = inoh, width = "100%") %>%
   addProviderTiles("Stamen.Toner", options = providerTileOptions(noWrap = TRUE)) %>%
   addPolygons(color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "%")) %>%
   addLegend(position = "bottomright", pal = pal, values = inoh$poverty16, 
@@ -107,12 +107,12 @@ leaflet(data = inoh) %>%
 ```{r}
 # Layering ALL 3 MAPS: crashes points, waterways lines and counties filled by poverty level polygons
 # With legends and layers control
-leaflet() %>%
+leaflet(width = "100%") %>%
   addProviderTiles("Stamen.Toner", group="Poverty", options = providerTileOptions(noWrap = TRUE)) %>%
   addProviderTiles("Stamen.Toner", group="Water", options = providerTileOptions(noWrap = TRUE)) %>%
   addProviderTiles("OpenMapSurfer.Roads", group="Crashes", options = providerTileOptions(noWrap = TRUE)) %>%
   addPolygons(data = inoh, group="Poverty", color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "%")) %>%
-  addPolylines(data = waterways, color = "#63CBD3") %>%
+  addPolylines(data = waterways, color = "#63CBD3", group = "Water") %>%
   addCircleMarkers(data = crashes15, group="Crashes", lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
   addLegend(position = "topright", group="Crashes", pal = palcrash, values = crashes15$Weekend., title = "Time of Week") %>%
   addLegend(position = "bottomright", group="Poverty", pal = pal, values = inoh$poverty16, 
