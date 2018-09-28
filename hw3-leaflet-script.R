@@ -87,18 +87,22 @@ leaflet(data = inoh) %>%
   addLegend(position = "bottomright", pal = pal, values = inoh$poverty16, 
             title = "Percent of Population<br>in Poverty (2016)")
 
-# Layering the points map and polygon map
+# Layering ALL 3 MAPS: crashes points, waterways lines and counties filled by poverty level polygons
 # With legends and layers control
 leaflet() %>%
   addProviderTiles("Stamen.Toner", group="Poverty", options = providerTileOptions(noWrap = TRUE)) %>%
+  addProviderTiles("Stamen.Toner", group="Water", options = providerTileOptions(noWrap = TRUE)) %>%
   addProviderTiles("OpenMapSurfer.Roads", group="Crashes", options = providerTileOptions(noWrap = TRUE)) %>%
   addPolygons(data = inoh, group="Poverty", color = ~pal(poverty16), popup = ~paste0("<b>", COUNTY, ":</b> ", poverty16, "%")) %>%
+  addPolylines(data = waterways, color = "#63CBD3") %>%
   addCircleMarkers(data = crashes15, group="Crashes", lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
   addLegend(position = "topright", group="Crashes", pal = palcrash, values = crashes15$Weekend., title = "Time of Week") %>%
   addLegend(position = "bottomright", group="Poverty", pal = pal, values = inoh$poverty16, 
             title = "Percent of Population<br>in Poverty (2016)") %>%
   addLayersControl(
-    overlayGroups = c("Poverty", "Crashes"),
+    overlayGroups = c("Poverty", "Crashes", "Water"),
     options = layersControlOptions(collapsed = FALSE))
+
+# the waterways line layer does not require a legend
 
 
