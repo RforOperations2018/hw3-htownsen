@@ -68,12 +68,12 @@ leaflet() %>%
   addLegend(position = "topright" , pal = palcrash, values = crashes15$Weekend., title = "Time of Week")
 
 # MAP with LINES: bike paths in Indiana
-trails <- readOGR("./TrailsAndPaths/TrailsAndPaths.shp", layer = "TrailsAndPaths",
+waterways <- readOGR("./indiana_water/indiana_water.shp", layer = "indiana_water",
                               GDAL1_integer64_policy = TRUE)
-plot(trails)
+plot(waterways)
 
-leaflet(data = trails) %>%
-  addProviderTiles("OpenMapSurfer.Roads", options = providerTileOptions(noWrap = TRUE)) %>%
+leaflet(data = waterways) %>%
+  addProviderTiles("Stamen.Toner", options = providerTileOptions(noWrap = TRUE)) %>%
   addPolylines(color = "#63CBD3")
 
 # MAP WITH FILLED POLYGONS: Poverty by County in OH and IN
