@@ -1,7 +1,7 @@
 ---
-title: "Leaflet Examples"
-author: "Geoffrey Arnold"
-date: "9/5/2018"
+title: "HOMEWORK 3 - LEAFLET (NO SHINY)"
+author: "Haley Townsend"
+date: "9/28/2018"
 output: html_document
 ---
 ```{r}
@@ -30,7 +30,7 @@ require(readxl)
 require(stringr)
 ```
 
-################################################################################################################
+###########################################################################################################
 
 ```{r}
 # Loading in the Indiana counties shape file
@@ -85,7 +85,6 @@ leaflet() %>%
 # MAP with LINES: bike paths in Indiana
 waterways <- readOGR("./indiana_water/indiana_water.shp", layer = "indiana_water",
                               GDAL1_integer64_policy = TRUE)
-plot(waterways)
 
 leaflet(data = waterways) %>%
   addProviderTiles("Stamen.Toner", options = providerTileOptions(noWrap = TRUE)) %>%
