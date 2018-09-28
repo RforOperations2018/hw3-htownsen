@@ -1,0 +1,1 @@
+https://tarantula.bloomington.in.gov:443/geoserver/publicgis/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=publicgis:TrailsAndPaths&outputFormat=shape-zip

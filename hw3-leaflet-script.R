@@ -67,6 +67,15 @@ leaflet() %>%
   addCircleMarkers(data = crashes15, lng = ~Longitude, lat = ~Latitude, radius = 1.5, color = ~palcrash(Weekend.)) %>%
   addLegend(position = "topright" , pal = palcrash, values = crashes15$Weekend., title = "Time of Week")
 
+# MAP with LINES: bike paths in Indiana
+trails <- readOGR("./TrailsAndPaths/TrailsAndPaths.shp", layer = "TrailsAndPaths",
+                              GDAL1_integer64_policy = TRUE)
+plot(trails)
+
+leaflet(data = trails) %>%
+  addProviderTiles("OpenMapSurfer.Roads", options = providerTileOptions(noWrap = TRUE)) %>%
+  addPolylines(color = "#63CBD3")
+
 # MAP WITH FILLED POLYGONS: Poverty by County in OH and IN
 pal <- colorNumeric(
   palette = "Reds",
